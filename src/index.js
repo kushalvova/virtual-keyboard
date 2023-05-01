@@ -129,11 +129,11 @@ function getKeyboardUp(language) {
 
 document.addEventListener('keyup', (event) => {
   const BUTTOM_ACTIVE = document.querySelector(`.${event.code}`);
-  BUTTOM_ACTIVE.classList.remove('buttom_active');
+  if (BUTTOM_ACTIVE) BUTTOM_ACTIVE.classList.remove('buttom_active');
 });
 document.addEventListener('keydown', (event) => {
   const BUTTOM_UNACTIVE = document.querySelector(`.${event.code}`);
-  BUTTOM_UNACTIVE.classList.add('buttom_active');
+  if (BUTTOM_UNACTIVE) BUTTOM_UNACTIVE.classList.add('buttom_active');
 });
 
 let language = 0;
