@@ -50,7 +50,7 @@ html {
   margin: 1.5px;
   text-align: center;
   background-color: #b5b5b5;
-  transition: 0.3s linear;
+  transition: 0.2s linear;
 
   &:hover {
     background-color: #f78a8a;
@@ -64,8 +64,31 @@ html {
 
 }
 
+.Tab,
+.Delete {
+  width: 43px;
+}
+
+.CapsLock {
+  width: 79px;
+}
+
+.Enter {
+  width: 87px;
+}
+
+.ShiftLeft,
+.ShiftRight {
+  width: 83px;
+}
+
 .Space {
   width: 277px;
+}
+
+.ControlLeft,
+.ControlRight {
+  width: 43px;
 }
 
 .message {
