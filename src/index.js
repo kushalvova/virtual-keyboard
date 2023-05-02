@@ -92,6 +92,7 @@ container.insertAdjacentHTML('beforeend', `<header>
 
 const KEYBOARD = document.querySelector('.keyboard');
 const INPUT = document.querySelector('.input-text');
+let language = 0;
 INPUT.value = '';
 
 function getInsert(str, substr, pos) {
@@ -106,13 +107,21 @@ function getDelete(str, shift, pos) {
   return array.join('');
 }
 
-function getKeyboard(x) {
+function getActivShift(shiftUP) {
+  const BUTTOM_ACTIVE = document.querySelector(`.${shiftUP}`);
+  BUTTOM_ACTIVE.classList.remove('buttom');
+  BUTTOM_ACTIVE.classList.add('activeShift');
+  BUTTOM_ACTIVE.classList.add('activeShift_active');
+}
+
+function getKeyboard(symbolSelection, shiftUP = false) {
   KEYBOARD.innerHTML = '';
   KEYS.forEach((arr) => {
     KEYBOARD.insertAdjacentHTML('beforeend', '<div class="row"></div>');
     arr.forEach((element) => {
       const ROW = KEYBOARD.lastChild;
-      ROW.insertAdjacentHTML('beforeend', `<div class="buttom ${element[0]}">${element[x]}</div>`);
+      ROW.insertAdjacentHTML('beforeend', `<div class="buttom ${element[0]}">${element[symbolSelection]}</div>`);
+
       const key = document.querySelector(`.${element[0]}`);
       if (element[0] === 'Backspace') {
         key.addEventListener('click', () => {
@@ -135,27 +144,37 @@ function getKeyboard(x) {
           INPUT.setSelectionRange(CURSOR, CURSOR);
           INPUT.focus();
         });
+      } else if (element[0] === 'ShiftRight' || element[0] === 'ShiftLeft') {
+        key.addEventListener('mousedown', (event) => {
+          const shiftActive = event.target.classList[1];
+          getKeyboard(language + 2, shiftActive);
+        });
+        key.addEventListener('mouseup', () => {
+          getKeyboard(language + 1);
+        });
       } else {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
-          INPUT.value = getInsert(INPUT.value, `${element[x]}`, CURSOR);
+          INPUT.value = getInsert(INPUT.value, `${element[symbolSelection]}`, CURSOR);
           INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
           INPUT.focus();
         });
       }
     });
   });
+  if (shiftUP) getActivShift(shiftUP);
 }
 
-function getKeyboardUp(language) {
+function getKeyboardUp(languageSelection) {
   document.addEventListener('keyup', (event) => {
-    if (event.code === 'ShiftLeft') {
-      getKeyboard(language + 1);
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      getKeyboard(languageSelection + 1);
     }
   });
   document.addEventListener('keydown', (event) => {
-    if (event.code === 'ShiftLeft') {
-      getKeyboard(language + 2);
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      getKeyboard(languageSelection + 2);
+      getActivShift(`${event.code}`);
     }
   });
 }
@@ -169,7 +188,6 @@ document.addEventListener('keydown', (event) => {
   if (BUTTOM_UNACTIVE) BUTTOM_UNACTIVE.classList.add('buttom_active');
 });
 
-let language = 0;
 getKeyboard(language + 1);
 getKeyboardUp(language);
 
@@ -180,9 +198,6 @@ function changeTheLanguage(func, ...codes) {
     if (pressed.has(codes[0]) && pressed.has(codes[1])) {
       pressed.clear();
       func();
-    }
-    if (event.code === 'ShiftLeft') {
-      getKeyboard(2);
     }
   });
   document.addEventListener('keyup', (event) => {
