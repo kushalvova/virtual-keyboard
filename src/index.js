@@ -112,11 +112,11 @@ function getDelete(str, shift, pos) {
 function getActivKey(keyUP) {
   const BUTTOM_ACTIVE = document.querySelector(`.${keyUP}`);
   if (!BUTTOM_ACTIVE.classList.contains('buttom')) BUTTOM_ACTIVE.classList.remove('buttom');
-  BUTTOM_ACTIVE.classList.add('activeShift');
-  BUTTOM_ACTIVE.classList.add('activeShift_active');
+  BUTTOM_ACTIVE.classList.add('activeBtn');
+  BUTTOM_ACTIVE.classList.add('activeBtn_active');
 }
 
-function getKeyboard(symbolSelection, shiftUP = false, capsUp = false) {
+function getKeyboard(symbolSelection, shiftUP = false, capsUp = isCaps) {
   KEYBOARD.innerHTML = '';
   KEYS.forEach((arr) => {
     KEYBOARD.insertAdjacentHTML('beforeend', '<div class="row"></div>');
@@ -155,14 +155,23 @@ function getKeyboard(symbolSelection, shiftUP = false, capsUp = false) {
         });
       } else if (element[0] === 'ShiftRight' || element[0] === 'ShiftLeft') {
         key.addEventListener('mousedown', (event) => {
-          const shiftActive = event.target.classList[1];
-          getKeyboard(language + 2, shiftActive);
-          INPUT.focus();
+          if (isCaps) {
+            getKeyboard(language + 1);
+            getActivKey('CapsLock');
+          } else {
+            const shiftActive = event.target.classList[1];
+            getKeyboard(language + 2, shiftActive);
+          }
         });
         key.addEventListener('mouseup', () => {
-          getKeyboard(language + 1);
-          INPUT.focus();
+          if (isCaps) {
+            getKeyboard(language + 2);
+            getActivKey('CapsLock');
+          } else {
+            getKeyboard(language + 1);
+          }
         });
+        INPUT.focus();
       } else if (element[0] === 'ControlRight' || element[0] === 'ControlLeft') {
         INPUT.focus();
       } else if (element[0] === 'AltRight' || element[0] === 'AltLeft') {
@@ -215,13 +224,19 @@ window.addEventListener('keydown', (event) => {
 function getKeyboardUp(registerSelection) {
   document.addEventListener('keyup', (event) => {
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      getKeyboard(registerSelection + 1);
+      if (isCaps) {
+        getKeyboard(registerSelection + 2);
+        getActivKey('CapsLock');
+      } else getKeyboard(registerSelection + 1);
     }
   });
   document.addEventListener('keydown', (event) => {
     if (!event.repeat) {
       if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-        getKeyboard(registerSelection + 2);
+        if (isCaps) {
+          getKeyboard(registerSelection + 1);
+          getActivKey('CapsLock');
+        } else getKeyboard(registerSelection + 2);
         getActivKey(`${event.code}`);
       }
     }

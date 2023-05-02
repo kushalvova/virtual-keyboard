@@ -43,7 +43,7 @@ html {
   justify-content: center;
 }
 
-.activeShift,
+.activeBtn,
 .buttom {
   height: 30px;
   min-width: 37px;
@@ -67,7 +67,7 @@ html {
 
 }
 
-.activeShift:hover {
+.activeBtn:hover {
   border-radius: 5px;
   background-color: #7aeded;
 }
