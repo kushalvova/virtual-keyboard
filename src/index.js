@@ -36,7 +36,7 @@ const KEYS = [
     ['Delete', 'Del', 'Del', 'Del', 'Del'],
   ],
   [
-    ['CapsLock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock'],
+    ['CapsLock', 'CapsLk', 'CapsLk', 'CapsLk', 'CapsLk'],
     ['KeyA', 'a', 'A', 'ф', 'Ф'],
     ['KeyS', 's', 'S', 'ы', 'Ы'],
     ['KeyD', 'd', 'D', 'в', 'В'],
@@ -95,6 +95,8 @@ const INPUT = document.querySelector('.input-text');
 let language = 0;
 let isCaps = false;
 INPUT.value = '';
+
+if (localStorage.getItem('language')) language = +localStorage.getItem('language');
 
 function getInsert(str, substr, pos) {
   const array = str.split('');
@@ -251,6 +253,7 @@ changeTheLanguage(
   () => {
     if (language === 0) language = 2;
     else language = 0;
+    localStorage.setItem('language', language);
     getKeyboard(language + 1);
     getKeyboardUp(language);
   },
