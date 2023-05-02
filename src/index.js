@@ -207,6 +207,10 @@ window.addEventListener('keydown', (event) => {
     INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
     INPUT.focus();
   }
+  if (event.code === 'AltRight' || event.code === 'AltLeft') {
+    event.preventDefault();
+    INPUT.focus();
+  }
 });
 
 function getKeyboardUp(registerSelection) {
@@ -238,14 +242,30 @@ getKeyboardUp(language);
 function changeTheLanguage(func, ...codes) {
   const pressed = new Set();
   document.addEventListener('keydown', (event) => {
-    pressed.add(event.code);
-    if (pressed.has(codes[0]) && pressed.has(codes[1])) {
-      pressed.clear();
-      func();
+    if (event.code === 'ControlLeft' || event.code === 'AltLeft') {
+      pressed.add(event.code);
     }
   });
   document.addEventListener('keyup', (event) => {
-    pressed.delete(event.code);
+    if (event.code === 'ControlLeft' || event.code === 'AltLeft') {
+      if (pressed.has(codes[0]) && pressed.has(codes[1])) func();
+      pressed.delete(event.code);
+      if (event.code === 'ControlLeft') {
+        const BUTTOM_UNACTIVE = document.querySelector('.AltLeft');
+        BUTTOM_UNACTIVE.classList.add('buttom_active');
+      }
+      if (event.code === 'AltLeft') {
+        const BUTTOM_UNACTIVE = document.querySelector('.ControlLeft');
+        BUTTOM_UNACTIVE.classList.add('buttom_active');
+      }
+    }
+    if (pressed.size === 0) {
+      const CONTROL_BUTTON = document.querySelector('.ControlLeft');
+      const ALT_BUTTON = document.querySelector('.AltLeft');
+
+      if (CONTROL_BUTTON.classList.contains('buttom_active')) CONTROL_BUTTON.classList.remove('buttom_active');
+      if (ALT_BUTTON.classList.contains('buttom_active')) ALT_BUTTON.classList.remove('buttom_active');
+    }
   });
 }
 
