@@ -138,6 +138,13 @@ function getKeyboard(symbolSelection, shiftUP = false, capsUp = false) {
           INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
           INPUT.focus();
         });
+      } else if (element[0] === 'Tab') {
+        key.addEventListener('click', () => {
+          const CURSOR = INPUT.selectionStart;
+          INPUT.value = getInsert(INPUT.value, '\u0009', CURSOR);
+          INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
+          INPUT.focus();
+        });
       } else if (element[0] === 'Delete') {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
@@ -190,8 +197,18 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+window.addEventListener('keydown', (event) => {
+  if (event.code === 'Tab') {
+    event.preventDefault();
+    const CURSOR = INPUT.selectionStart;
+    INPUT.value = getInsert(INPUT.value, '\u0009', CURSOR);
+    INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
+    INPUT.focus();
+  }
+});
+
 function getKeyboardUp(registerSelection) {
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keyup', (event) => {
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       getKeyboard(registerSelection + 1);
     }
