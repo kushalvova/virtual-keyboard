@@ -81,7 +81,6 @@ const KEYS = [
 const container = document.querySelector('.page');
 container.insertAdjacentHTML('beforeend', `<header>
                                             <h1 class="title">RSS Virtual Keyboard</h1>
-                                            <p class="message">Уважаемый проверящий, прошу войти в положение и дать время закончить задание!!!</p>
                                           </header>
                                           <main class="main">
                                             <textarea autofocus class="input-text"></textarea>
