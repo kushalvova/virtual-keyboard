@@ -219,9 +219,11 @@ function getKeyboardUp(registerSelection) {
     }
   });
   document.addEventListener('keydown', (event) => {
-    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      getKeyboard(registerSelection + 2);
-      getActivKey(`${event.code}`);
+    if (!event.repeat) {
+      if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+        getKeyboard(registerSelection + 2);
+        getActivKey(`${event.code}`);
+      }
     }
   });
 }
