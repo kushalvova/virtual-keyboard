@@ -111,7 +111,7 @@ function getDelete(str, shift, pos) {
 
 function getActivKey(keyUP) {
   const BUTTOM_ACTIVE = document.querySelector(`.${keyUP}`);
-  BUTTOM_ACTIVE.classList.remove('buttom');
+  if (!BUTTOM_ACTIVE.classList.contains('buttom')) BUTTOM_ACTIVE.classList.remove('buttom');
   BUTTOM_ACTIVE.classList.add('activeShift');
   BUTTOM_ACTIVE.classList.add('activeShift_active');
 }
