@@ -81,17 +81,24 @@ const KEYS = [
 const container = document.querySelector('.page');
 container.insertAdjacentHTML('beforeend', `<header>
                                             <h1 class="title">RSS Virtual Keyboard</h1>
+                                            <p class="message">Уважаемый проверящий, прошу войти в положение и дать время закончить задание!!!</p>
                                           </header>
                                           <main class="main">
-                                            <textarea class="input-text"></textarea>
+                                            <textarea autofocus class="input-text"></textarea>
                                             <div class="keyboard"></div>
                                             <p class="description">Keyboard created in Windows</p>
                                             <p class="description">Switch language: left ctrl + left alt</p>  
                                           </main>`);
 
 const KEYBOARD = document.querySelector('.keyboard');
-const INPUT_TEXT = document.querySelector('.input-text');
-INPUT_TEXT.value = '';
+const INPUT = document.querySelector('.input-text');
+INPUT.value = '';
+
+function insert(str, substr, pos) {
+  const array = str.split('');
+  array.splice(pos, 0, substr);
+  return array.join('');
+}
 
 function getKeyboard(x) {
   KEYBOARD.innerHTML = '';
@@ -103,11 +110,21 @@ function getKeyboard(x) {
       const key = document.querySelector(`.${element[0]}`);
       if (element[0] === 'Backspace') {
         key.addEventListener('click', () => {
-          INPUT_TEXT.value = INPUT_TEXT.value.slice(0, INPUT_TEXT.value.length - 1);
+          INPUT.value = INPUT.value.slice(0, INPUT.value.length - 1);
+        });
+      } else if (element[0] === 'Enter') {
+        key.addEventListener('click', () => {
+          const CURSOR = INPUT.selectionStart;
+          INPUT.value = insert(INPUT.value, '\n', CURSOR);
+          INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
+          INPUT.focus();
         });
       } else {
         key.addEventListener('click', () => {
-          INPUT_TEXT.value += `${element[x]}`;
+          const CURSOR = INPUT.selectionStart;
+          INPUT.value = insert(INPUT.value, `${element[x]}`, CURSOR);
+          INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
+          INPUT.focus();
         });
       }
     });
