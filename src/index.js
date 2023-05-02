@@ -158,6 +158,8 @@ function getKeyboard(symbolSelection, shiftUP = false) {
         INPUT.focus();
       } else if (element[0] === 'AltRight' || element[0] === 'AltLeft') {
         INPUT.focus();
+      } else if (element[0] === 'MetaLeft') {
+        INPUT.focus();
       } else {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
