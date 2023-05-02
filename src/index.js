@@ -148,10 +148,16 @@ function getKeyboard(symbolSelection, shiftUP = false) {
         key.addEventListener('mousedown', (event) => {
           const shiftActive = event.target.classList[1];
           getKeyboard(language + 2, shiftActive);
+          INPUT.focus();
         });
         key.addEventListener('mouseup', () => {
           getKeyboard(language + 1);
+          INPUT.focus();
         });
+      } else if (element[0] === 'ControlRight' || element[0] === 'ControlLeft') {
+        INPUT.focus();
+      } else if (element[0] === 'AltRight' || element[0] === 'AltLeft') {
+        INPUT.focus();
       } else {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
