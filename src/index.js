@@ -94,9 +94,15 @@ const KEYBOARD = document.querySelector('.keyboard');
 const INPUT = document.querySelector('.input-text');
 INPUT.value = '';
 
-function insert(str, substr, pos) {
+function getInsert(str, substr, pos) {
   const array = str.split('');
   array.splice(pos, 0, substr);
+  return array.join('');
+}
+
+function getDelete(str, shift, pos) {
+  const array = str.split('');
+  array.splice(pos + shift, 1);
   return array.join('');
 }
 
@@ -110,19 +116,29 @@ function getKeyboard(x) {
       const key = document.querySelector(`.${element[0]}`);
       if (element[0] === 'Backspace') {
         key.addEventListener('click', () => {
-          INPUT.value = INPUT.value.slice(0, INPUT.value.length - 1);
+          const CURSOR = INPUT.selectionStart;
+          INPUT.value = getDelete(INPUT.value, -1, CURSOR);
+          INPUT.setSelectionRange(CURSOR - 1, CURSOR - 1);
+          INPUT.focus();
         });
       } else if (element[0] === 'Enter') {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
-          INPUT.value = insert(INPUT.value, '\n', CURSOR);
+          INPUT.value = getInsert(INPUT.value, '\n', CURSOR);
           INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
+          INPUT.focus();
+        });
+      } else if (element[0] === 'Delete') {
+        key.addEventListener('click', () => {
+          const CURSOR = INPUT.selectionStart;
+          INPUT.value = getDelete(INPUT.value, 0, CURSOR);
+          INPUT.setSelectionRange(CURSOR, CURSOR);
           INPUT.focus();
         });
       } else {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
-          INPUT.value = insert(INPUT.value, `${element[x]}`, CURSOR);
+          INPUT.value = getInsert(INPUT.value, `${element[x]}`, CURSOR);
           INPUT.setSelectionRange(CURSOR + 1, CURSOR + 1);
           INPUT.focus();
         });
