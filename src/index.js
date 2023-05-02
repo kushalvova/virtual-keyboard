@@ -62,7 +62,7 @@ const KEYS = [
     ['Comma', ',', '<', 'б', 'Б'],
     ['Period', '.', '>', 'ю', 'Ю'],
     ['Slash', '/', '?', '.', ','],
-    ['ArrowUp', '&#10514;', '&#10514;', '&#10514;', '&#10514;'],
+    ['ArrowUp', '▲', '▲', '▲', '▲'],
     ['ShiftRight', 'Shift', 'Shift', 'Shift', 'Shift'],
   ],
   [
@@ -71,9 +71,9 @@ const KEYS = [
     ['AltLeft', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['Space', ' ', ' ', ' ', ' '],
     ['AltRight', 'Alt', 'Alt', 'Alt', 'Alt'],
-    ['ArrowLeft', '&#8676;', '&#8676;', '&#8676;', '&#8676;'],
-    ['ArrowDown', '&#10515;', '&#10515;', '&#10515;', '&#10515;'],
-    ['ArrowRight', '&#8677;', '&#8677;', '&#8677;', '&#8677;'],
+    ['ArrowLeft', '◄', '◄', '◄', '◄'],
+    ['ArrowDown', '▼', '▼', '▼', '▼'],
+    ['ArrowRight', '►', '►', '►', '►'],
     ['ControlRight', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
   ],
 ];
