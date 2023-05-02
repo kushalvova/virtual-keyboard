@@ -93,6 +93,7 @@ container.insertAdjacentHTML('beforeend', `<header>
 const KEYBOARD = document.querySelector('.keyboard');
 const INPUT = document.querySelector('.input-text');
 let language = 0;
+let isCaps = false;
 INPUT.value = '';
 
 function getInsert(str, substr, pos) {
@@ -107,14 +108,14 @@ function getDelete(str, shift, pos) {
   return array.join('');
 }
 
-function getActivShift(shiftUP) {
-  const BUTTOM_ACTIVE = document.querySelector(`.${shiftUP}`);
+function getActivKey(keyUP) {
+  const BUTTOM_ACTIVE = document.querySelector(`.${keyUP}`);
   BUTTOM_ACTIVE.classList.remove('buttom');
   BUTTOM_ACTIVE.classList.add('activeShift');
   BUTTOM_ACTIVE.classList.add('activeShift_active');
 }
 
-function getKeyboard(symbolSelection, shiftUP = false) {
+function getKeyboard(symbolSelection, shiftUP = false, capsUp = false) {
   KEYBOARD.innerHTML = '';
   KEYS.forEach((arr) => {
     KEYBOARD.insertAdjacentHTML('beforeend', '<div class="row"></div>');
@@ -160,6 +161,13 @@ function getKeyboard(symbolSelection, shiftUP = false) {
         INPUT.focus();
       } else if (element[0] === 'MetaLeft') {
         INPUT.focus();
+      } else if (element[0] === 'CapsLock') {
+        key.addEventListener('click', () => {
+          if (capsUp) getKeyboard(language + 1, false, !capsUp);
+          else getKeyboard(language + 2, false, !capsUp);
+          isCaps = !capsUp;
+          INPUT.focus();
+        });
       } else {
         key.addEventListener('click', () => {
           const CURSOR = INPUT.selectionStart;
@@ -170,19 +178,28 @@ function getKeyboard(symbolSelection, shiftUP = false) {
       }
     });
   });
-  if (shiftUP) getActivShift(shiftUP);
+  if (shiftUP) getActivKey(shiftUP);
+  if (capsUp) getActivKey('CapsLock');
 }
 
-function getKeyboardUp(languageSelection) {
-  document.addEventListener('keyup', (event) => {
+document.addEventListener('keyup', (event) => {
+  if (event.code === 'CapsLock') {
+    if (isCaps) getKeyboard(language + 1, false, !isCaps);
+    else getKeyboard(language + 2, false, !isCaps);
+    isCaps = !isCaps;
+  }
+});
+
+function getKeyboardUp(registerSelection) {
+  document.addEventListener('keydown', (event) => {
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      getKeyboard(languageSelection + 1);
+      getKeyboard(registerSelection + 1);
     }
   });
   document.addEventListener('keydown', (event) => {
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      getKeyboard(languageSelection + 2);
-      getActivShift(`${event.code}`);
+      getKeyboard(registerSelection + 2);
+      getActivKey(`${event.code}`);
     }
   });
 }
