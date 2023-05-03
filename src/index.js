@@ -231,8 +231,8 @@ function getKeyboardUp(registerSelection) {
     }
   });
   document.addEventListener('keydown', (event) => {
-    if (!event.repeat) {
-      if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      if (!event.repeat) {
         if (isCaps) {
           getKeyboard(registerSelection + 1);
           getActivKey('CapsLock');
